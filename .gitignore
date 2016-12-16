@@ -1,3 +1,7 @@
+#vs code files
+/.vscode
+jsconfig.json
+
 # Logs
 logs
 *.log
