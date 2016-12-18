@@ -14,9 +14,9 @@ node index.js
 
 After application launch. Check next links:
 
-[http://localhost/api/v1/signup?name=zinnur&password=12345](http://localhost/api/v1/signup?name=zinnur&password=12345)
+[http://localhost:3535/api/v1/signup?name=zinnur&password=12345](http://localhost/api/v1/signup?name=zinnur&password=12345)
 
-[http://localhost/api/v1/auth?name=zinnur&password=12345](http://localhost/api/v1/auth?name=zinnur&password=12345)
+[http://localhost:3535/api/v1/auth?name=zinnur&password=12345](http://localhost/api/v1/auth?name=zinnur&password=12345)
 
 [http://localhost:3535/api](http://localhost:3535/api) - this link should return 404 error
 
