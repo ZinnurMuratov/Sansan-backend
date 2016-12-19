@@ -2,6 +2,6 @@
     "host": "localhost",
     "port": 3535,
     "logFile": "all.log",
-    "database": "mongodb://localhost/node_api",
+    "database": "mongodb://biosintezzz:1234nn193728@ds163677.mlab.com:63677/sansan",
     "secret": "top_secret_word_ever_been"
 }
