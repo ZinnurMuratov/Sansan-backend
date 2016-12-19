@@ -2,8 +2,7 @@
 
 const app = require("./app.js");
 const config = require("./config");
-
-const port = config.port;
+var port = process.env.PORT || 8000
 const server = app.listen(port);
 
 server.on("listening", () => {
