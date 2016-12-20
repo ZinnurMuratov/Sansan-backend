@@ -10,7 +10,7 @@ module.exports = {
     },
 
     signUp : function (req, res, next) {
-        if (!req.body.phone || !req.body.name || !req.body.password || req.body.city) {
+        if (!req.body.phone || !req.body.name || !req.body.password || !req.body.city) {
             res.json({ success: false, message: "Please pass phone, name, city and password"});
         } else {
             var newUser = new User({
@@ -22,7 +22,7 @@ module.exports = {
             });
             newUser.save()
                 .then((user) => {
-                    res.json({ success: true, message: "Successful created new user." });
+                    res.status(200).json({ success: true, message: "Successful created new user." });
                 })
                 .catch((err) => {
                     return res.json({ success: false, message: "failed"});
