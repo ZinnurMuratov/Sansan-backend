@@ -18,7 +18,7 @@ module.exports = {
     },
 
     getBalance : function (req,res) {
-        Bid.find({worker: req.body.worker}).exec(function(err, bids) {
+        Bid.find({worker: req.param('worker')}).exec(function(err, bids) {
             var earned = 0;
 
             bids.forEach(function(bid) {
