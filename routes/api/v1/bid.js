@@ -64,6 +64,8 @@ module.exports = {
             }
             if (!err) {
                 bid.price = req.body.price || bid.price;
+                bid.worker = req.body.worker || bid.worker;
+                bid.status = req.body.status || bid.status;
                 bid.save(function (err, bid) {
                     if (err) {
                         res.status(500).json(err)
