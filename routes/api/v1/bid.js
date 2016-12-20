@@ -23,7 +23,7 @@ module.exports = {
         }
 
         if (req.param('city')){
-            city = Number(req.param("city"));
+            city = req.param("city");
         }
 
         Bid.find({status: req.param('status'), city: city})
@@ -81,7 +81,7 @@ module.exports = {
 
     createBid : function (req, res, next) {
         if (!req.body.title || !req.body.phone || !req.body.city ) {
-            res.json({ success: false, message: "Please pass title, city and client's phone"});
+            res.status(403).json({ success: false, message: "Please pass title, city and client's phone"});
         } else {
             var newBid = new Bid({
                 creator: req.user._id,
@@ -94,7 +94,7 @@ module.exports = {
             });
             newBid.save()
                 .then((bid) => {
-                    res.json({ success: true, message: "Successful created new bid." });
+                    res.status(200).json({ success: true, message: "Successful created new bid." });
                 })
                 .catch((err) => {
                     return res.json({ success: false, message: "failed"});
