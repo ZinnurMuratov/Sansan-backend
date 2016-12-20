@@ -18,14 +18,14 @@ module.exports = {
     },
 
     getBalance : function (req,res) {
-        Bid.find({}).sort({created: 'desc'}).exec(function(err, bids) {
+        Bid.find({worker: req.body.worker}).exec(function(err, bids) {
             var earned = 0;
 
             bids.forEach(function(bid) {
                 earned = earned + bid.price
             });
 
-            res.status(200).json({earned: earned});
+            res.status(200).json({ success: true, earned: earned});
         });
     }
 
