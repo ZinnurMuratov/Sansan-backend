@@ -26,6 +26,28 @@ module.exports = {
 
             res.status(200).json({ success: true, earned: earned});
         });
+    },
+
+    updateUser : function (req,res) {
+        User.findById(req.user._id, function (err, user) {
+            if(!user) {
+                res.status(400).json({ error: 'Not found' });
+            }
+            if (!err) {
+                user.city = req.user.city || user.city;
+                user.name = req.user.name || user.name;
+                user.role = req.user.role || user.role;
+                user.save(function (err, bid) {
+                    if (err) {
+                        res.status(500).json({success:false, message : "Error"})
+                    }
+                    res.status(200).json(user);
+                });
+
+            } else {
+                res.status(500).json({ error: 'Server error' });
+            }
+        });
     }
 
 }
