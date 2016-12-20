@@ -33,6 +33,7 @@ router.post('/signup', (req,res) => signUpController.signUp(req,res));
 router.post('/auth', (req,res) => signInController.signIn(req,res));
 
 router.get("/users",(req,res) => userController.getUsers(req,res));
+router.put("/user" ,(req,res) => userController.updateUser(req,req));
 router.get("/earned", (req,res) => userController.getBalance(req,res));
 
 module.exports = router;
