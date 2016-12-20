@@ -34,10 +34,10 @@ module.exports = {
                 res.status(400).json({ error: 'Not found' });
             }
             if (!err) {
-                user.city = req.user.city || user.city;
-                user.name = req.user.name || user.name;
-                user.role = req.user.role || user.role;
-                user.save(function (err, bid) {
+                user.city = req.body.city || user.city;
+                user.name = req.body.name || user.name;
+                user.role = req.body.role || user.role;
+                user.save(function (err, user) {
                     if (err) {
                         res.status(500).json({success:false, message : "Error"})
                     }
