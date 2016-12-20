@@ -24,6 +24,11 @@ var UserSchema = new Schema({
     role: {
         type: String,
         required: false
+    },
+
+    city: {
+        type: String,
+        required: true
     }
 });
 

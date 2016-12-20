@@ -37,6 +37,11 @@ var BidSchema = new Schema({
     status: {
         type: String,
         required: true
+    },
+
+    city: {
+        type: String,
+        require: true
     }
 });
 
