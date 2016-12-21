@@ -17,7 +17,7 @@ module.exports = {
         } else {
             Fcm.findOne({ device: req.body.device })
                 .then((fcmEntity) => {
-                    if (!fcmEntity) {
+                    if (fcmEntity) {
                         updateFCM(req,res)
                     }
                 })
