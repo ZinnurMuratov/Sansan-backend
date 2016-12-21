@@ -2,7 +2,7 @@
  * Created by Zinnur on 20.12.16.
  */
 
-var User = require("../../../models/user");
+var User = require("../models/user");
 module.exports = {
 
     test : function(req, res){

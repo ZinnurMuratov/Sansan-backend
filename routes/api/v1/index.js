@@ -6,10 +6,11 @@ var mongoose = require("mongoose");
 var config = require("../../../config.js");
 var jwt = require('jwt-simple');
 var sessionController = require("../../../middleware/session");
-var bidsController = require("./bid");
-var signUpController = require("./signup");
-var signInController = require("./signin");
-var userController = require("./user");
+var bidsController = require("../../../controllers/bid");
+var signUpController = require("../../../controllers/signup");
+var signInController = require("../../../controllers/signin");
+var userController = require("../../../controllers/user");
+var pushController = require("../../../controllers/push");
 
 // configuring passport to work with jwt
 require("../../../config/passport")(passport);
@@ -35,5 +36,7 @@ router.post('/auth', (req,res) => signInController.signIn(req,res));
 router.get("/users",(req,res) => userController.getUsers(req,res));
 router.put("/user" ,(req,res) => userController.updateUser(req,res));
 router.get("/earned", (req,res) => userController.getBalance(req,res));
+
+router.put("/fcm",(req, res) => pushController.attachDevice(req,res));
 
 module.exports = router;

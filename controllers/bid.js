@@ -2,8 +2,8 @@
  * Created by Zinnur on 20.12.16.
  */
 
-var Bid = require("../../../models/bid");
-var User = require("../../../models/user");
+var Bid = require("../models/bid");
+var User = require("../models/user");
 
 module.exports = {
 
@@ -64,7 +64,9 @@ module.exports = {
             }
             if (!err) {
                 bid.price = req.body.price || bid.price;
-                bid.worker = req.body.worker || bid.worker;
+                if (req.body.status == "new") {
+                    bid.worker = req.body.worker || bid.worker;
+                }
                 bid.status = req.body.status || bid.status;
                 bid.save(function (err, bid) {
                     if (err) {

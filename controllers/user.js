@@ -3,9 +3,9 @@
  */
 
 var passport = require("passport");
-var config = require("../../../config.js");
-var User = require("../../../models/user");
-var Bid = require("../../../models/bid");
+var config = require("../config.js");
+var User = require("../models/user");
+var Bid = require("../models/bid");
 
 module.exports = {
 
@@ -48,6 +48,7 @@ module.exports = {
                 res.status(500).json({ error: 'Server error' });
             }
         });
-    }
+    },
+
 
 }

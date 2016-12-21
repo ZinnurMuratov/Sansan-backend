@@ -1,8 +1,8 @@
 /**
  * Created by Zinnur on 20.12.16.
  */
-var User = require("../../../models/user");
-var config = require("../../../config.js");
+var User = require("../models/user");
+var config = require("../config.js");
 var jwt = require('jwt-simple');
 module.exports = {
 
