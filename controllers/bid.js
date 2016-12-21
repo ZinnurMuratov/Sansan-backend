@@ -4,6 +4,8 @@
 
 var Bid = require("../models/bid");
 var User = require("../models/user");
+var Fcm = require("../models/fcm");
+var firebase = require("../config/firebase");
 
 module.exports = {
 
@@ -96,6 +98,7 @@ module.exports = {
             });
             newBid.save()
                 .then((bid) => {
+                    getAllUsersFromCity(req.user, bid.title);
                     res.status(200).json({ success: true, message: "Successful created new bid." });
                 })
                 .catch((err) => {
@@ -103,6 +106,41 @@ module.exports = {
                 });
         }
     }
+}
 
+function getAllUsersFromCity(user, title) {
+    User.find({ city : user.city}, function(err, users) {
+        users.forEach(function(user) {
+            getFCMs(user, title)
+        });
+    });
+}
 
+function getFCMs(user, title) {
+    Fcm.find({ user_id : user._id}, function(err, fcms) {
+        fcms.forEach(function(fcm) {
+            sendPush(fcm, title)
+        });
+
+    });
+}
+
+function sendPush(fcm, title) {
+    var message = {
+        to: fcm.fcm,
+        data: {
+            your_custom_data_key: 'hello'
+        },
+        notification: {
+            title: title,
+            body: 'test push notification'
+        }
+    };
+    firebase.send(message)
+        .then(function(response){
+            console.log("Successfully sent with response: ", response);
+        })
+        .catch(function(err){
+            console.log("Something has gone wrong!");
+        })
 }

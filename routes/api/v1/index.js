@@ -38,5 +38,6 @@ router.put("/user" ,(req,res) => userController.updateUser(req,res));
 router.get("/earned", (req,res) => userController.getBalance(req,res));
 
 router.put("/fcm",(req, res) => pushController.attachDevice(req,res));
+router.get("/fcm",(req, res) => pushController.test(req,res));
 
 module.exports = router;

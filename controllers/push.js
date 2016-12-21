@@ -5,10 +5,22 @@ var Fcm = require("../models/fcm");
 var firebase = require("../config/firebase");
 var config = require("../config.js");
 var jwt = require('jwt-simple');
+
 module.exports = {
 
     test : function(req, res){
-        res.json({status:"ok"})
+        Fcm.findOne({ user_id : req.user._id})
+            .then((fcm) => {
+                if (fcm) {
+                    sendPush(req, res, fcm);
+                } else {
+                    res.status(404).json({ success: false, message: "not found fcm token"});
+                }
+            })
+            .catch((err) => {
+                res.status(500).json({ success: false, message: "failed  " + err });
+            });
+
     },
 
     attachDevice : function (req, res, next) {
@@ -55,6 +67,28 @@ function updateFCM(req,res,fcm) {
         }
         res.status(200).json({ success: true, message: "Successfully updated fcm token." });
     });
+}
+
+function sendPush(req, res, fcm) {
+    var message = {
+        to: fcm.fcm,
+        data: {
+            your_custom_data_key: 'hello'
+        },
+        notification: {
+            title: 'Hello World',
+            body: 'test push notification'
+        }
+    };
+    firebase.send(message)
+        .then(function(response){
+            console.log("Successfully sent with response: ", response);
+            res.status(200).json({ success: true, message: response });
+        })
+        .catch(function(err){
+            console.log("Something has gone wrong!");
+            res.status(500).json({ success: false, message: err });
+        })
 }
 
 
