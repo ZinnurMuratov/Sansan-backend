@@ -3,17 +3,17 @@
  */
 var config = require("../config.js");
 var mongoose = require("mongoose");
-var bcrypt = require("bcrypt-nodejs");
 
 var Schema = mongoose.Schema;
 var FcmSchema = new Schema({
-    user:{
+    user_id:{
         type: String,
         require: true
     },
     device:{
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     fcm: {
         type: String,

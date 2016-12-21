@@ -12,17 +12,19 @@ module.exports = {
     },
 
     attachDevice : function (req, res, next) {
-        if (!req.body.user || !req.body.fcm || !req.body.device) {
+        if (!req.body.user_id || !req.body.fcm || !req.body.device) {
             res.json({ success: false, message: "Please pass userId, fcmToken and device Id"});
         } else {
-            Fcm.findOne({ device: req.body.device })
-                .then((fcmEntity) => {
-                    if (fcmEntity) {
-                        updateFCM(req,res)
+            Fcm.findOne({ device : req.body.device, user_id : req.body.user_id})
+                .then((fcm) => {
+                    if (fcm) {
+                        updateFCM(req, res, fcm);
+                    } else {
+                        createFCM(req, res);
                     }
                 })
                 .catch((err) => {
-                    createFCM(req,res)
+                    res.status(500).json({ success: false, message: "failed 1 " + err });
                 });
         }
     }
@@ -32,7 +34,7 @@ module.exports = {
 
 function createFCM(req,res){
     var newFcm = new Fcm({
-        user: req.body.user,
+        user_id: req.body.user_id,
         device: req.body.device,
         fcm: req.body.fcm
     });
@@ -45,14 +47,15 @@ function createFCM(req,res){
         });
 }
 
-function updateFCM(req, res, fcmEntity) {
-    fcmEntity.fcm = req.body.name || user.name;
-    fcmEntity.save()
-        .then((fcm) => {
-            res.status(200).json({ success: true, message: "Successfully updated fcm token." });
-        })
-        .catch((err) => {
-            return res.json({ success: false, message: "failed"});
-        });
+function updateFCM(req,res,fcm) {
+    fcm.fcm = req.body.fcm || fcm.fcm;
+    fcm.save(function (err, fcm) {
+        if (err) {
+            res.status(500).json({ success: false, message: "failed"});
+        }
+        res.status(200).json({ success: true, message: "Successfully updated fcm token." });
+    });
 }
+
+
 
