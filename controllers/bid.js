@@ -49,19 +49,37 @@ module.exports = {
             };
         }
 
-        Bid.find(query)
-            .sort({created: 'desc'})
-            .limit(perPage)
-            .skip(perPage * page)
-            .exec(function(err, bids) {
-                var bidMap = [];
+        if (req.user.role == "admin"){
+            Bid.find({status: req.param('status'), city: city})
+                .sort({created: 'desc'})
+                .limit(perPage)
+                .skip(perPage * page)
+                .exec(function(err, bids) {
+                    var bidMap = [];
 
-                bids.forEach(function(bid) {
-                    bidMap.push(bid)
+                    bids.forEach(function(bid) {
+                        bidMap.push(bid)
+                    });
+
+                    res.status(200).json(bidMap);
                 });
+        } else {
+            Bid.find(query)
+                .sort({created: 'desc'})
+                .limit(perPage)
+                .skip(perPage * page)
+                .exec(function(err, bids) {
+                    var bidMap = [];
 
-                res.status(200).json(bidMap);
-            });
+                    bids.forEach(function(bid) {
+                        bidMap.push(bid)
+                    });
+
+                    res.status(200).json(bidMap);
+                });
+        }
+
+
     },
 
     getBid : function (req, res, next) {
