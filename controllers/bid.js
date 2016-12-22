@@ -64,7 +64,7 @@ module.exports = {
 
         Bid.findById(req.params.id, function (err, bid) {
             if(!bid) {
-                res.status(400).json({ error: 'Not found' });
+                res.status(404).json({ success : false, message: 'Not found' });
             }
             if (!err) {
                 if (bid.worker && bid.worker == req.user._id){
@@ -80,7 +80,7 @@ module.exports = {
                         if (err) {
                             res.status(500).json(({ success: false, message : "failed"}))
                         }
-                        res.status(200).json(({ success: true, message : "updated"}));
+                        res.status(200).json(({ success: true, message : "updated", bid: bid}));
                     });
                 } else if (bid.worker && bid.worker != req.user._id) {
                     res.status(500).json({ success: false, message : "busy"})
@@ -93,9 +93,9 @@ module.exports = {
                     }
                     bid.save(function (err, bid) {
                         if (err) {
-                            res.status(500).json({success: true, message : "db error"});
+                            res.status(500).json({success: false, message : "db error"});
                         }
-                        res.status(200).json({ success: true, message : "subscribed"});
+                        res.status(200).json({ success: true, message : "subscribed", bid : bid});
                     });
                 };
 
