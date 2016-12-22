@@ -32,12 +32,21 @@ module.exports = {
 
         if (req.param('status') == "архив"){
              query = {
-                archive: req.param('status'),
-                city: city };
-        } else {
+                 worker : req.user._id,
+                 archive: req.param('status'),
+                 city: city };
+        } else if (req.param('status') == "активный") {
+            query = {
+                worker: req.user._id,
+                status: req.param('status'),
+                city: city
+            };
+        }
+         else {
             query = {
                 status: req.param('status'),
-                city: city };
+                city: city
+            };
         }
 
         Bid.find(query)
@@ -99,7 +108,7 @@ module.exports = {
 
                     });
                 } else if (bid.worker && bid.worker != req.user._id) {
-                    res.status(500).json({ success: false, message : "busy"})
+                    res.status(200).json({ success: false, message : "busy"})
                 } else {
                     if (bid.status === "новый") {
                         bid.worker = req.user._id || bid.worker;
