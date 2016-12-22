@@ -50,7 +50,18 @@ module.exports = {
         }
 
         if (req.user.role == "admin"){
-            Bid.find({status: req.param('status'), city: city})
+
+            if (req.param('status') == "архив"){
+                query = {
+                    archive: req.param('status'),
+                    city: city };
+            } else {
+                query = {
+                    status: req.param('status'),
+                    city: city
+                };
+            }
+            Bid.find(query)
                 .sort({created: 'desc'})
                 .limit(perPage)
                 .skip(perPage * page)
