@@ -38,7 +38,8 @@ module.exports = {
                 });
                 console.log("bef admin"+ earned );
                 earned = earned * 0,2;
-                console.log(" admin"+ earned );
+
+                console.log(" admin"+ earned * 0,2 );
 
                 res.status(200).json({ success: true, earned: earned});
             });
