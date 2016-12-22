@@ -53,6 +53,11 @@ var BidSchema = new Schema({
         required: true
     },
 
+    archive: {
+        type: String,
+        required: false
+    },
+
     city: {
         type: String,
         require: true

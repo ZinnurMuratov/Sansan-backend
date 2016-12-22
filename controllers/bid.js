@@ -18,6 +18,7 @@ module.exports = {
         var perPage = 10,
             page = 0,
             city = "kazan";
+        var query;
         if (req.param('limit')){
             perPage = Number(req.param("limit"));
         }
@@ -29,7 +30,17 @@ module.exports = {
             city = req.param("city");
         }
 
-        Bid.find({status: req.param('status'), city: city})
+        if (req.param('status') == "архив"){
+             query = {
+                archive: req.param('status'),
+                city: city };
+        } else {
+            query = {
+                status: req.param('status'),
+                city: city };
+        }
+
+        Bid.find(query)
             .sort({created: 'desc'})
             .limit(perPage)
             .skip(perPage * page)
@@ -71,10 +82,12 @@ module.exports = {
                     if (req.body.status == "отказ"){
                         bid.closed = req.body.date || bid.closed;
                         bid.status = req.body.status || bid.status;
+                        bid.archive = "архив";
                     } else if (req.body.status == "выполнено"){
                         bid.closed = req.body.date || bid.closed;
                         bid.status = req.body.status || bid.status;
                         bid.price = req.body.price || bid.price;
+                        bid.archive = "архив";
                     }
                     bid.save(function (err, bid) {
                         if (err) {
@@ -118,6 +131,7 @@ module.exports = {
                 price: 0,
                 status: "новый",
                 created: req.body.date,
+                archive: null,
                 worker: null,
                 worker_name: null,
                 closed: null,
