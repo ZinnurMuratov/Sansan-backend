@@ -92,8 +92,11 @@ module.exports = {
                     bid.save(function (err, bid) {
                         if (err) {
                             res.status(500).json(({ success: false, message : "failed"}))
+                        } else {
+                            getAdminsFromCity(bid.city, bid.title);
+                            res.status(200).json(({ success: true, message : "updated", bid: bid}));
                         }
-                        res.status(200).json(({ success: true, message : "updated", bid: bid}));
+
                     });
                 } else if (bid.worker && bid.worker != req.user._id) {
                     res.status(500).json({ success: false, message : "busy"})
@@ -107,8 +110,11 @@ module.exports = {
                     bid.save(function (err, bid) {
                         if (err) {
                             res.status(500).json({success: false, message : "db error"});
+                        } else{
+                            getAdminsFromCity(bid.city, bid.title);
+                            res.status(200).json({ success: true, message : "subscribed", bid : bid});
                         }
-                        res.status(200).json({ success: true, message : "subscribed", bid : bid});
+
                     });
                 };
 
@@ -139,7 +145,7 @@ module.exports = {
             });
             newBid.save()
                 .then((bid) => {
-                    getAllUsersFromCity(req.user, bid.title);
+                    getAllUsersFromCity(req.user.city, bid.title);
                     res.status(200).json({ success: true, message: "Successful created new bid." });
                 })
                 .catch((err) => {
@@ -149,10 +155,18 @@ module.exports = {
     }
 };
 
-function getAllUsersFromCity(user, title) {
-    User.find({ city : user.city}, function(err, users) {
+function getAllUsersFromCity(city, title) {
+    User.find({ city : city}, function(err, users) {
         users.forEach(function(user) {
-            getFCMs(user, title)
+            getFCMs(user, 'Новая заявка: ' + title)
+        });
+    });
+}
+
+function getAdminsFromCity(city, title) {
+    User.find({ city : city, role : "admin"}, function(err, users) {
+        users.forEach(function(user) {
+            getFCMs(user, 'Заявка обновилась: ' + title)
         });
     });
 }
@@ -170,11 +184,8 @@ function sendPush(fcm, title) {
     var message = {
         to: fcm.fcm,
         data: {
-            your_custom_data_key: 'hello'
-        },
-        notification: {
-            title: title,
-            body: 'test push notification'
+            title: 'СанСаныч',
+            body: title
         }
     };
     firebase.send(message)
