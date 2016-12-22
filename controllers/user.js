@@ -22,6 +22,7 @@ module.exports = {
             Bid.find({worker: req.param('worker')}).exec(function(err, bids) {
                 var earned = 0;
                 bids.forEach(function(bid) {
+                    console.log("bid "+ bid.price );
                     earned = earned + bid.price
                 });
 
@@ -31,6 +32,7 @@ module.exports = {
             Bid.find({city: req.user.city}).exec(function(err, bids) {
                 var earned = 0;
                 bids.forEach(function(bid) {
+                    console.log("bid admin"+ bid.price );
                     earned = earned + bid.price
                 });
 
