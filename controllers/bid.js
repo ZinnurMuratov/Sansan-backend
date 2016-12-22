@@ -6,6 +6,7 @@ var Bid = require("../models/bid");
 var User = require("../models/user");
 var Fcm = require("../models/fcm");
 var firebase = require("../config/firebase");
+var dateUtil = require("../utils/date");
 
 module.exports = {
 
@@ -66,7 +67,7 @@ module.exports = {
             }
             if (!err) {
                 bid.price = req.body.price || bid.price;
-                if (req.body.status == "new") {
+                if (req.body.status == "новый") {
                     bid.worker = req.body.worker || bid.worker;
                 }
                 bid.status = req.body.status || bid.status;
@@ -93,8 +94,8 @@ module.exports = {
                 phone: req.body.phone,
                 city: req.body.city,
                 price: 0,
-                status: "new",
-                created: new Date().getTime()
+                status: "новый",
+                created: dateUtil.getCurrentDate()
             });
             newBid.save()
                 .then((bid) => {
@@ -102,7 +103,7 @@ module.exports = {
                     res.status(200).json({ success: true, message: "Successful created new bid." });
                 })
                 .catch((err) => {
-                    return res.json({ success: false, message: "failed"});
+                    return res.json({ success: false, message: "failed" + err});
                 });
         }
     }
@@ -144,3 +145,4 @@ function sendPush(fcm, title) {
             console.log("Something has gone wrong!");
         })
 }
+

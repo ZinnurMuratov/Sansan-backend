@@ -30,8 +30,18 @@ var BidSchema = new Schema({
     },
 
     created: {
-        type: Date,
+        type: String,
         required: true
+    },
+
+    subscribed: {
+        type: String,
+        require: false
+    },
+
+    closed: {
+        type: String,
+        required: false
     },
 
     status: {
