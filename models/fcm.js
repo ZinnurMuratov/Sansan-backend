@@ -13,7 +13,7 @@ var FcmSchema = new Schema({
     device:{
         type: String,
         required: true,
-        unique: true
+        unique: false
     },
     fcm: {
         type: String,
