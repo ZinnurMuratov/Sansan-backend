@@ -224,7 +224,7 @@ function sendPush(fcm, title) {
         data: {
             title: 'СанСаныч',
             body: title,
-            fcm: fcm.user
+            user_id: fcm.user
         }
     };
     firebase.send(message)
