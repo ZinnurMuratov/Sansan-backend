@@ -32,11 +32,13 @@ module.exports = {
             Bid.find({city: req.user.city}).exec(function(err, bids) {
                 var earned = 0;
                 bids.forEach(function(bid) {
-                    console.log("bid admin"+ bid.price );
+                    console.log("bid admin -> "+ bid.price );
                     earned = earned + bid.price
+                    console.log("earned admin ->"+ bid.price );
                 });
 
                 earned = earned * 0,2;
+                console.log(" admin"+ earned );
 
                 res.status(200).json({ success: true, earned: earned});
             });
