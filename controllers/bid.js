@@ -69,6 +69,7 @@ module.exports = {
                 bid.price = req.body.price || bid.price;
                 if (req.body.status == "новый") {
                     bid.worker = req.body.worker || bid.worker;
+                    bid.subscribed = dateUtil.getCurrentDate();
                 }
                 bid.status = req.body.status || bid.status;
                 bid.save(function (err, bid) {
