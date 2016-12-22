@@ -18,14 +18,28 @@ module.exports = {
     },
 
     getBalance : function (req,res) {
-        Bid.find({worker: req.param('worker')}).exec(function(err, bids) {
-            var earned = 0;
-            bids.forEach(function(bid) {
-                earned = earned + bid.price
-            });
+        if (req.user.role == "worker"){
+            Bid.find({worker: req.param('worker')}).exec(function(err, bids) {
+                var earned = 0;
+                bids.forEach(function(bid) {
+                    earned = earned + bid.price
+                });
 
-            res.status(200).json({ success: true, earned: earned});
-        });
+                res.status(200).json({ success: true, earned: earned});
+            });
+        } else {
+            Bid.find({city: req.user.city}).exec(function(err, bids) {
+                var earned = 0;
+                bids.forEach(function(bid) {
+                    earned = earned + bid.price
+                });
+
+                earned = earned * 0,2;
+
+                res.status(200).json({ success: true, earned: earned});
+            });
+        }
+
     },
 
     updateUser : function (req,res) {
