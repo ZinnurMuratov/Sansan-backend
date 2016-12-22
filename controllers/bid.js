@@ -69,7 +69,7 @@ module.exports = {
                 bid.price = req.body.price || bid.price;
                 if (bid.status == "новый") {
                     bid.worker = req.user.name || bid.worker;
-                    bid.subscribed = dateUtil.getCurrentDate();
+                    bid.subscribed = req.body.date || bid.subscribed;
                 }
                 bid.status = req.body.status || bid.status;
                 bid.save(function (err, bid) {
@@ -86,8 +86,8 @@ module.exports = {
     },
 
     createBid : function (req, res, next) {
-        if (!req.body.title || !req.body.phone || !req.body.city ) {
-            res.status(403).json({ success: false, message: "Please pass title, city and client's phone"});
+        if (!req.body.title || !req.body.phone || !req.body.city  || !req.body.date) {
+            res.status(403).json({ success: false, message: "Please pass title, city, date and client's phone"});
         } else {
             var newBid = new Bid({
                 creator: req.user._id,
@@ -96,7 +96,7 @@ module.exports = {
                 city: req.body.city,
                 price: 0,
                 status: "новый",
-                created: dateUtil.getCurrentDate(),
+                created: req.body.date,
                 worker: null,
                 closed: null,
                 subscribed: null
