@@ -68,7 +68,7 @@ module.exports = {
             if (!err) {
                 bid.price = req.body.price || bid.price;
                 if (req.body.status == "новый") {
-                    bid.worker = req.body.worker || bid.worker;
+                    bid.worker = req.user.name || bid.worker;
                     bid.subscribed = dateUtil.getCurrentDate();
                 }
                 bid.status = req.body.status || bid.status;
@@ -96,7 +96,10 @@ module.exports = {
                 city: req.body.city,
                 price: 0,
                 status: "новый",
-                created: dateUtil.getCurrentDate()
+                created: dateUtil.getCurrentDate(),
+                worker: null,
+                closed: null,
+                subscribed: null
             });
             newBid.save()
                 .then((bid) => {
