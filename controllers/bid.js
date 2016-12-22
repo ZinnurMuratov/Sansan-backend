@@ -61,26 +61,47 @@ module.exports = {
     },
 
     updateBid : function (req, res, next) {
+
         Bid.findById(req.params.id, function (err, bid) {
             if(!bid) {
                 res.status(400).json({ error: 'Not found' });
             }
             if (!err) {
-                bid.price = req.body.price || bid.price;
-                if (bid.status == "новый") {
-                    bid.worker = req.user.name || bid.worker;
-                    bid.subscribed = req.body.date || bid.subscribed;
-                }
-                bid.status = req.body.status || bid.status;
-                bid.save(function (err, bid) {
-                    if (err) {
-                        res.status(500).json(err)
+                if (bid.worker && bid.worker == req.user._id){
+                    if (req.body.status == "отказ"){
+                        bid.closed = req.body.date || bid.closed;
+                        bid.status = req.body.status || bid.status;
+                    } else if (req.body.status == "выполнено"){
+                        bid.closed = req.body.date || bid.closed;
+                        bid.status = req.body.status || bid.status;
+                        bid.price = req.body.price || bid.price;
                     }
-                    res.status(200).json(bid);
-                });
+                    bid.save(function (err, bid) {
+                        if (err) {
+                            res.status(500).json(({ success: false, message : "failed"}))
+                        }
+                        res.status(200).json(({ success: true, message : "updated"}));
+                    });
+                } else if (bid.worker && bid.worker != req.user._id) {
+                    res.status(500).json({ success: false, message : "busy"})
+                } else {
+                    if (bid.status === "новый") {
+                        bid.worker = req.user._id || bid.worker;
+                        bid.worker_name = req.user.name || bid.worker_name;
+                        bid.subscribed = req.body.date || bid.subscribed;
+                        bid.status = "активный" || bid.status;
+                    }
+                    bid.save(function (err, bid) {
+                        if (err) {
+                            res.status(500).json({success: true, message : "db error"});
+                        }
+                        res.status(200).json({ success: true, message : "subscribed"});
+                    });
+                };
+
 
             } else {
-                res.status(500).json({ error: 'Server error' });
+                res.status(500).json({ success: false, message : "server error"});
             }
         });
     },
@@ -98,6 +119,7 @@ module.exports = {
                 status: "новый",
                 created: req.body.date,
                 worker: null,
+                worker_name: null,
                 closed: null,
                 subscribed: null
             });
@@ -111,7 +133,7 @@ module.exports = {
                 });
         }
     }
-}
+};
 
 function getAllUsersFromCity(user, title) {
     User.find({ city : user.city}, function(err, users) {
@@ -148,5 +170,9 @@ function sendPush(fcm, title) {
         .catch(function(err){
             console.log("Something has gone wrong!");
         })
+}
+
+function validateStatus(status) {
+    return !status && (status == "новый" || status == "активный" || status == "выполнено" || status == "отказ")
 }
 

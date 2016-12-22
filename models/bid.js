@@ -16,6 +16,10 @@ var BidSchema = new Schema({
         type: String,
         required: false
     },
+    worker_name:{
+        type: String,
+        require: false
+    },
     title: {
         type: String,
         required: true
