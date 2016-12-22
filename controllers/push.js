@@ -36,7 +36,7 @@ module.exports = {
                     }
                 })
                 .catch((err) => {
-                    res.status(500).json({ success: false, message: "failed seacrh" + err });
+                    res.status(500).json({ success: false, message: "failed seacrh"  });
                 });
         }
     }
@@ -55,7 +55,7 @@ function createFCM(req,res){
             res.status(200).json({ success: true, message: "Successfully attached device." });
         })
         .catch((err) => {
-            return res.json({ success: false, message: "failed on save" + err});
+            return res.json({ success: false, message: "failed on save" });
         });
 }
 
@@ -63,7 +63,7 @@ function updateFCM(req,res,fcm) {
     fcm.fcm = req.body.fcm || fcm.fcm;
     fcm.save(function (err, fcm) {
         if (err) {
-            res.status(500).json({ success: false, message: "failed on update" + err});
+            res.status(500).json({ success: false, message: "failed on update" });
         }
         res.status(200).json({ success: true, message: "Successfully updated fcm token." });
     });
