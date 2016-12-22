@@ -67,7 +67,7 @@ module.exports = {
             }
             if (!err) {
                 bid.price = req.body.price || bid.price;
-                if (req.body.status == "новый") {
+                if (bid.status == "новый") {
                     bid.worker = req.user.name || bid.worker;
                     bid.subscribed = dateUtil.getCurrentDate();
                 }
