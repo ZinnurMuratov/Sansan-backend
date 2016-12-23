@@ -37,7 +37,7 @@ module.exports = {
                     console.log("earned admin ->"+ bid.price );
                 });
                 console.log("bef admin"+ earned );
-                earned = Math.m(earned, 0.2);
+                earned = earned * 0.2;
 
                 console.log(" admin "+ earned);
 
