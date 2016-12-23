@@ -18,8 +18,9 @@ module.exports = {
     },
 
     getBalance : function (req,res) {
+        console.log(" role ->" + req.user.role );
         if (req.user.role == "worker"){
-            console.log(" worker"+ earned );
+            console.log(" worker" );
             Bid.find({worker: req.param('worker')}).exec(function(err, bids) {
                 var earned = 0;
                 bids.forEach(function(bid) {
